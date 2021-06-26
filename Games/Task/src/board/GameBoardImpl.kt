@@ -24,7 +24,6 @@ class GameBoardImpl<T>( width: Int) : GameBoard<T>, SquareBoardImpl(width) {
     }
 
     override fun set(cell: Cell, value: T?) {
-        if (value != null)
             this.cellValues += cell to value
     }
 

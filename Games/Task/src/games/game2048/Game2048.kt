@@ -60,6 +60,8 @@ fun GameBoard<Int?>.moveValuesInRowOrColumn(rowOrColumn: List<Cell>): Boolean {
     val rowOrColumnValues = rowOrColumn.map { cell -> this.get(cell)}
     val rowOrColumnValuesMerged = rowOrColumnValues.moveAndMergeEqual { it*it }
 
+    rowOrColumn.forEach { cell -> this.set(cell, null) }
+
     for ((i,cellValue) in rowOrColumnValuesMerged.withIndex()) {
         this.set(rowOrColumn.get(i), cellValue)
     }
