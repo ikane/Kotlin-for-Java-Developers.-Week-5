@@ -60,13 +60,18 @@ fun GameBoard<Int?>.moveValuesInRowOrColumn(rowOrColumn: List<Cell>): Boolean {
     val rowOrColumnValues = rowOrColumn.map { cell -> this.get(cell)}
     val rowOrColumnValuesMerged = rowOrColumnValues.moveAndMergeEqual { it*it }
 
-    rowOrColumn.forEach { cell -> this.set(cell, null) }
-
-    for ((i,cellValue) in rowOrColumnValuesMerged.withIndex()) {
-        this.set(rowOrColumn.get(i), cellValue)
+    while (rowOrColumnValuesMerged.size < 4) {
+        rowOrColumnValuesMerged.plus(null)
     }
 
-    return rowOrColumnValues.size > rowOrColumnValuesMerged.size
+    var valuesMoved = false
+    for ((i,cellValue) in rowOrColumnValuesMerged.withIndex()) {
+        this.set(rowOrColumn.get(i), cellValue)
+        if (cellValue != rowOrColumnValues[i])
+            valuesMoved = true
+    }
+
+    return valuesMoved
 }
 
 /*
@@ -78,9 +83,10 @@ fun GameBoard<Int?>.moveValuesInRowOrColumn(rowOrColumn: List<Cell>): Boolean {
  */
 fun GameBoard<Int?>.moveValues(direction: Direction): Boolean {
     return when(direction) {
-        Direction.DOWN -> moveValuesInRowOrColumn(this.getColumn(0..4, 0))
-        Direction.UP -> moveValuesInRowOrColumn(this.getColumn(0..4, 0))
-        Direction.LEFT -> moveValuesInRowOrColumn(this.getRow(0, 0..4))
-        Direction.RIGHT -> moveValuesInRowOrColumn(this.getRow(0, 0..4))
+        //Direction.DOWN -> (1..this.width).forEach { j ->  moveValuesInRowOrColumn(this.getColumn(1..4, j))}
+        Direction.DOWN -> moveValuesInRowOrColumn(this.getColumn(1..4, 1))
+        Direction.UP -> moveValuesInRowOrColumn(this.getColumn(1..4, 1))
+        Direction.LEFT -> moveValuesInRowOrColumn(this.getRow(1, 1..4))
+        Direction.RIGHT -> moveValuesInRowOrColumn(this.getRow(1, 1..4))
     }
 }
